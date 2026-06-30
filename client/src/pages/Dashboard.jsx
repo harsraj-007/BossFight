@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import QuestionCard from "../components/QuestionCard";
 import Timer from "../components/Timer";
 import InterviewSetup from "../components/InterviewSetup";
-import InterviewSession from "../components/IntervewSession";
+import InterviewSession from "../components/InterviewSession";
 
 
 function Dashboard() {
