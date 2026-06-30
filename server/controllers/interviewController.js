@@ -16,23 +16,45 @@ const model = genAI.getGenerativeModel({
 
 const generateQuestions = async (req,res) =>{
     try {
-        const { role } = req.body;
+        const { role, difficulty, experience, company  } = req.body;
 
 
         const prompt = `
-        Generate exactly 5 interview questions for a ${role} role.
 
-        Rules:
-        - Only return questions
-        - No explanations
-        - No numbering
-        - One question per line
+            Generate exactly 5 interview questions.
 
-        Include:
-        - HR questions
-        - DSA questions
-        - CS fundamentals questions
-        `;
+            Role:
+            ${role}
+
+            Difficulty:
+            ${difficulty}
+
+            Candidate Experience:
+            ${experience}
+
+            Target Company:
+            ${company}
+
+            Rules:
+
+            - Return exactly 5 questions
+            - No numbering
+            - No explanations
+            - One question per line
+
+            The questions should match the expected interview style of ${company}.
+
+            Adjust the difficulty according to ${difficulty}.
+
+            Adjust the seniority according to ${experience}.
+
+            Include a balanced mix of:
+
+            - HR / Behavioral
+            - DSA
+            - CS Fundamentals
+
+            `;
 
         const result = await model.generateContent(prompt);
         
@@ -48,6 +70,9 @@ const generateQuestions = async (req,res) =>{
         const interview = await Interview.create({
             userId: req.user.userId,
             role,
+            difficulty,
+            experience,
+            company,
             questions,
         });
 
@@ -212,9 +237,9 @@ const evaluateInterview = async (req, res) => {
 
     const { role, responses, interviewId } = req.body;
 
-    console.log("Interview ID:", interviewId);
+    // console.log("Interview ID:", interviewId);
 
-    console.log("Responses:", responses);
+    // console.log("Responses:", responses);
     
     const answers = responses.map(
                       item => item.answer

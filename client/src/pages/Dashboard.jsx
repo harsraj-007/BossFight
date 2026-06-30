@@ -2,13 +2,25 @@ import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import BASE_URL , {authHeaders} from "../services/api";
 import ReactMarkdown from "react-markdown";
+import QuestionCard from "../components/QuestionCard";
+import Timer from "../components/Timer";
+import InterviewSetup from "../components/InterviewSetup";
+import InterviewSession from "../components/IntervewSession";
 
 
 function Dashboard() {
 
   const [role, setRole] = useState("");
 
+  const [difficulty, setDifficulty] = useState("Medium");
+
+  const [experience, setExperience] = useState("0-1 Years");
+
+  const [company, setCompany] = useState("General");
+
   const [questions, setQuestions] = useState([]);
+
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [interviewId, setInterviewId] = useState("");  //to update same interview later with ans 
 
@@ -41,6 +53,9 @@ function Dashboard() {
 
         body: JSON.stringify({
           role,
+          difficulty,
+          experience,
+          company
         }),
       }
     );
@@ -104,64 +119,93 @@ function Dashboard() {
 
     <div>
 
-      <h1>Dashboard</h1>
+      <InterviewSetup
 
-      <input
-        type="text"
-        placeholder="Role"
-        onChange={(e) =>
-          setRole(e.target.value)
-        }
+          role={role}
+          setRole={setRole}
+
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+
+          experience={experience}
+          setExperience={setExperience}
+
+          company={company}
+          setCompany={setCompany}
+
+          generateQuestions={generateQuestions}
+
       />
 
-      <button
-        onClick={generateQuestions}
-      >
-        Generate Questions
-      </button>
+      <InterviewSession
+
+          questions={questions}
+
+          currentQuestion={currentQuestion}
+          setCurrentQuestion={setCurrentQuestion}
+
+          answers={answers}
+          setAnswers={setAnswers}
+
+          submitInterview={submitInterview}
+
+          overallFeedback={overallFeedback}
+
+      />
+
+      
+      {/* { questions.length > 0 && !overallFeedback &&
+
+      ( <Timer initialTime={20*60} onTimeUp={submitInterview} /> )
+
+      }
 
 
-        {questions.map((q, index) => (
+      {
+        questions.length > 0 && 
+        (<QuestionCard 
+          question={questions[currentQuestion]}
+          index = {currentQuestion}
+          answer = {answers[currentQuestion] || ""}
+          
+          setAnswer={(text) => setAnswers(prev => ({...prev,[currentQuestion]:text}))}/>)
+      }
 
-        <div key={index}>
 
-        <h3>
-        Question {index + 1}
-        </h3>
+      {
 
-        <p>{q}</p>
+        questions.length > 0  && currentQuestion
 
-        <textarea
+        <
+          questions.length - 1
 
-        placeholder="Write your answer"
+        &&
 
-        value={
-            answers[index] || ""
+        (
+
+        <button
+
+        onClick={()=>
+
+        setCurrentQuestion(
+
+        currentQuestion + 1
+
+        )
+
         }
 
-        onChange={(e) =>
+        >
 
-            setAnswers((prev) => ({
-            ...prev,
-            [index]: e.target.value,
-            }))
-        }
+        Next →
 
-        rows="5"
-        cols="60"
+        </button>
 
-        />
-
-        <br />
-
-        <hr />
-
-    </div>
-
-    ))}
-
+        )
+      }
         {
             questions.length > 0 && // submit button only visible when all the questions are answered
+            currentQuestion === questions.length-1 && 
             (<button onClick={submitInterview}>
             Submit Interview           
             </button>)
@@ -181,7 +225,7 @@ function Dashboard() {
                 </>
             
             )
-        }
+        } */}
 
         <button
             onClick={() =>

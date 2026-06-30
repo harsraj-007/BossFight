@@ -13,6 +13,21 @@ const interviewSchema = new mongoose.Schema({
     required: true,
   },
 
+  difficulty: {
+    type: String,
+    required: true,
+  },
+
+  experience: {
+    type: String,
+    required: true,
+  },
+
+  company: {
+    type: String,
+    required: true,
+  },
+
   questions: {
     type: [String],
     required: true,

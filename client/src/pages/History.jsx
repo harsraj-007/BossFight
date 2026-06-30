@@ -85,6 +85,21 @@ function History() {
 
             </p>
 
+            <p>
+              <b>Difficulty: </b>
+              {item.difficulty}
+            </p>
+
+            <p>
+              <b>Experience: </b>
+              {item.experience}
+            </p>
+
+            <p>
+              <b>Target Company: </b>
+              {item.company}
+            </p>
+
             <h3>
 
               Questions & Answers
